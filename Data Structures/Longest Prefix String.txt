@@ -1,0 +1,23 @@
+void calculate_lp_string(int lps[],string s)
+{
+    lps[0]=0;
+    int len=0;
+    
+    for(int i=1;i<s.size();i++)
+    {
+        while(len!=0 && s[i]!=s[len])
+        {
+            len=lps[len-1];
+        }
+        
+        if(s[i]==s[len])
+        {
+            len++;
+            lps[i]=len;
+        }
+        else
+        {
+            lps[i]=0;
+        }
+    }
+}

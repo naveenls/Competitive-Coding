@@ -1,0 +1,34 @@
+const int maxN=1e5;
+const int k=18;
+
+long long arr[maxN];
+long long Sparse[maxN][k]={0};
+
+void BuildTable()
+{        
+        for(int i=0;i<n;i++)
+        {
+        	Sparse[i][0]=arr[i];
+	}
+	for(int j=1;j<k;j++)
+	{
+		for(int i=0; i+(1<<j)<=n;i++)
+		{
+				Sparse[i][j]=function(Sparse[i][j-1],Sparse[i+(1<<(j-1))][j-1]);
+		}
+	}
+}
+
+long long get_val(int l,int r)
+{
+	long long res=0;
+	for(int j=k-1;j>=0;j--)
+	{
+		if((1<<j)<=r-l+1)
+		{
+			res=function(res,Sparse[l][j]);
+			l+=(1<<j);
+		}
+	}
+	return res;
+}

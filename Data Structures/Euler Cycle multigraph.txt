@@ -1,0 +1,55 @@
+//Undirected
+const int maxN=1e5;
+multiset<int> graph[maxN]; 
+  
+vector<int> find_cycle(int src) 
+{
+   vector<int> temp; 
+    temp.push_back(src);
+    vector<int> result;
+    
+    while (temp.size()) 
+	{
+        int u = temp.back();
+        if (adj[u].size())
+		{
+            int v = *adj[u].begin();
+            temp.push_back(v); 
+            adj[u].erase(adj[u].begin()); 
+	    adj[v].erase(adj[v].find(u));
+        }            
+        else 
+		{
+            temp.pop_back();             
+            result.push_back(u); 
+        }
+    }
+    return result; 
+}
+
+//Directed
+multiset<int> adj[maxN];
+
+vector<int> find_cycle(int src)
+{
+    vector<int> temp; 
+    temp.push_back(src);
+    vector<int> result;
+    
+    while (temp.size()) 
+	{
+        int u = temp.back();
+        if (adj[u].size())
+		{
+            int v = *adj[u].begin();
+            temp.push_back(v); 
+            adj[u].erase(adj[u].begin()); 
+        }            
+        else 
+		{
+            temp.pop_back();             
+            result.push_back(u); 
+        }
+    }
+    return result; 
+}

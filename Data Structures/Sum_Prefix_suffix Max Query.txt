@@ -1,0 +1,60 @@
+const int maxN=1e5;
+const int k=18;
+
+int arr[maxN];
+int suffix[maxN][k]={0};
+int sum[maxN][k];
+int prefix[maxN][k];
+
+int n;
+
+void BuildTable()
+{        
+    for(int i=0;i<n;i++)
+    {
+       	sum[i][0]=arr[i];
+       	prefix[i][0]=arr[i];
+       	suffix[i][0]=arr[i];
+	}
+	for(int j=1;j<k;j++)
+	{
+		for(int i=0; i+(1<<j)<=n;i++)
+		{
+			sum[i][j]=(sum[i][j-1]+sum[i+(1<<(j-1))][j-1]);
+			prefix[i][j]=max(prefix[i][j-1] , sum[i][j-1]+prefix[i+(1<<(j-1))][j-1]);
+			suffix[i][j]=max(suffix[i][j-1] + sum[i+(1<<(j-1))][j-1] , suffix[i+(1<<(j-1))][j-1]);
+		}
+	}
+}
+
+int get_pre(int l,int r)
+{
+	int ssum=0;
+	int pre=-1e9;
+	for(int j=k-1;j>=0;j--)
+	{
+		if((1<<j)<=r-l+1)
+		{
+			
+			pre=max(pre,ssum+prefix[l][j]);
+			ssum+=sum[l][j];
+			l+=(1<<j);
+		}
+	}
+	return pre;
+}
+
+int get_suff(int l,int r)
+{
+	int suff=-1e9;
+	for(int j=k-1;j>=0;j--)
+	{
+		if((1<<j)<=r-l+1)
+		{
+			
+			suff=max(suff+sum[l][j],suffix[l][j]);
+			l+=(1<<j);
+		}
+	}
+	return suff;
+}

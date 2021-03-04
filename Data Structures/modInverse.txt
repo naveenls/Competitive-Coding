@@ -1,0 +1,14 @@
+long long power(long long x, long long y, long long m) 
+{ 
+    if (y == 0) 
+        return 1; 
+    long long p = power(x, y/2, m) % m; 
+    p = (p * p) % m; 
+  
+    return (y%2 == 0)? p : (x * p) % m; 
+}
+
+long long modInverse(long long a, long long m) 
+{ 
+    return power(a, m-2, m);
+} 

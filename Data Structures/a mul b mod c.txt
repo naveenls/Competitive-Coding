@@ -1,0 +1,22 @@
+ long long multiple(long long a, long long b, long long c) 
+
+{
+
+  if (b == 0) {  
+
+      return 0 ;
+
+  }
+
+  long long ret = multiple(a, b >> 1, c) ;
+
+  ret = (ret + ret) % c ;
+
+  if (b & 1) {  
+
+      ret = (ret + a) % c;
+
+  }
+
+  return ret;
+}

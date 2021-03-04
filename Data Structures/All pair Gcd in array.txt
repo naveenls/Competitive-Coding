@@ -1,0 +1,36 @@
+const int maxN=1e5+1;
+long long sum_all_pair_gcd(long long arr[])
+{
+	long long C[maxN]={0};
+        for(long long i=0;i<N;i++)
+        {
+            C[arr[i]]++;
+        }
+        for(long long i=1;i<maxN;i++)
+        {
+            long long j=2*i;
+            while(j<maxN)
+            {
+                C[i]+=C[j];
+                j+=i;
+            }
+        }
+
+	long long E[maxN]={0};
+        for(long long i=maxN-1;i>=1;i--)
+        {
+            E[i]=C[i]*C[i];
+            long long j=2*i;
+            while(j<maxN)
+            {
+                E[i]-=E[j];
+                j+=i;
+            }
+        }
+        long long sum=0;
+        
+        for(long long i=1;i<maxN;i++)
+        {
+            sum=(sum+i*E[i]);
+        }
+}

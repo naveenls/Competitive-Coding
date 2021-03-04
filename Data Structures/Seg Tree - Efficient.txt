@@ -1,0 +1,44 @@
+const int maxN=1e5;
+
+long long tree[2*maxN];
+
+void build(long long arr[],int n)
+{
+	for(int i=0;i<n;i++)
+	{
+		tree[n+i]=arr[i];
+	}	
+
+	for(int i=n-1;i>0;i--)
+	{
+		tree[i] = tree[i<<1] + tree[i<<1 | 1];
+	}
+}
+
+void update(int p,long long value,int n)
+{
+	p+=n;
+	tree[p]=value;
+
+	for(int i=p; i>1; i >>=1)
+	{
+		tree[i>>1] = tree[i] + tree[i^1];
+	}
+}
+
+// Get sum on interval [l,r)
+
+long long query(int l,int r,int n)
+{
+	long long res=0;
+
+	for(l+=n,r+=n; l<r ; l >>= 1,r >>=1)
+	{
+		if(l&1)
+			res+=tree[l++];
+		if(r&1)
+			res+=tree[--r];
+	}
+
+	return res;
+}

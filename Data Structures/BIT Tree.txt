@@ -1,0 +1,40 @@
+#define maxN
+class BIT_Tree{
+    
+public:
+    long long n;
+    long long arr[maxN];
+    
+    BIT_Tree(ll a[],ll n)
+    {
+        this->n=n;
+        memset(arr,0,sizeof(arr));
+        for(long long i=0;i<n;i++)
+        {
+            update(i,a[i]);
+        }
+    }
+    
+    void update(long long ind,long long val)
+    {
+        ind++;   
+        while(ind<=n)
+        {
+            arr[ind]+=val;
+            ind+= (ind & (-ind));
+        }
+    }
+    
+    long long get_val(long long ind)
+    {
+        ind++;
+        long long sum=0;
+        while(ind)
+        {
+            sum+=arr[ind];
+            ind-= (ind & (-ind));
+        }
+        return sum;
+    }
+}
+

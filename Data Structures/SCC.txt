@@ -1,0 +1,64 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int maxN=1e5;
+int n;
+
+int vals[maxN];
+vector<int> adj[maxN];
+vector<int> adjR[maxN];
+
+
+void DFSUtil(int v, bool visited[],vector<int> &temp) 
+{ 
+    visited[v] = true; 
+    temp.push_back(v);
+  
+
+    for (auto i = adjR[v].begin(); i != adjR[v].end(); ++i) 
+        if (!visited[*i]) 
+            DFSUtil(*i, visited,temp); 
+} 
+
+void fillOrder(int v, bool visited[], stack<int> &Stack) 
+{ 
+    visited[v] = true; 
+  
+    for(auto i = adj[v].begin(); i != adj[v].end(); ++i) 
+        if(!visited[*i])
+            fillOrder(*i, visited, Stack); 
+   
+    Stack.push(v); 
+} 
+
+void find_scc() 
+{
+    stack<int> Stack; 
+  
+    bool *visited = new bool[n]; 
+    for(int i = 0; i < n; i++) 
+        visited[i] = false; 
+  
+
+    for(int i = 0; i < n; i++) 
+        if(visited[i] == false) 
+            fillOrder(i, visited, Stack); 
+  
+  
+    for(int i = 0; i < n; i++) 
+        visited[i] = false; 
+  
+    vector< vector<int> > scc;
+    while (Stack.empty() == false) 
+    { 
+        int v = Stack.top(); 
+        Stack.pop(); 
+  
+        if (visited[v] == false) 
+        { 
+            vector<int> temp;
+            DFSUtil(v, visited,temp);
+	    scc.push_back(temp);
+        }
+    }
+
+} 

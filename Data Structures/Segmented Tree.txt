@@ -1,0 +1,69 @@
+const int maxN=1e5;
+
+long long val[3*maxN+1]={0};
+
+void BuildTree(long long arr[],int ind,int start,int end)
+{        
+        if(start==end)
+        {
+            val[ind]=arr[start];
+        }
+        else
+        {
+            long long mid=(start+end)/2;
+            BuildTree(arr,2*ind+1,start,mid);
+            BuildTree(arr,2*ind+2,mid+1,end);
+
+            val[ind]=val[2*ind+1] + val[2*ind+2];
+        }
+}
+
+void Update(long long diff,int pos,int ind,int start,int end)
+{
+	if(pos<start || pos>end)
+		return;
+
+	if(start==end)
+	{
+		val[ind]+=diff;
+	}
+	else
+	{
+		int mid=(start+end)>>1;
+		Update(diff,pos,2*ind+1,start,mid);
+		Update(diff,pos,2*ind+2,mid+1,end);	
+		val[ind]=val[2*ind+1] + val[2*ind+2];
+	}
+}
+
+long long get_sum(int ind,int start,int end,int l,int r)
+{
+	if(start>r || end<l)
+		return 0;
+
+	if(start>=l && end<=r)
+	{
+		return val[ind];
+	}
+	else
+	{
+		int mid=(start+end)>>1;
+		long long sum1=get_sum(2*ind+1,start,mid,l,r);
+		long long sum2=get_sum(2*ind+2,mid+1,end,l,r);	
+		return sum1+sum2;
+	}
+}
+
+void print_tree(int ind,int s,int e)
+{
+	if(s==e)
+		cout<<val[ind]<<' ';
+		
+	else
+	{
+		int mid=(s+e)>>1;
+		cout<<val[ind]<<' ';
+		print_tree(2*ind+1,s,mid);
+		print_tree(2*ind+2,mid+1,e);
+	}
+}

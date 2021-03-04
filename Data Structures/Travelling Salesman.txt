@@ -1,0 +1,74 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int N=4;
+int maxv=50000;
+int L[N][N]={{maxv,20,42,35},
+            {20,maxv,30,34},
+            {42,30,maxv,12},
+            {35,34,12,maxv}};
+
+int count_bits(int i)
+{
+    int count=0;
+    while(i)
+    {
+        count++;
+        i=(i)&(i-1);
+    }
+    return count;
+}
+
+void travelling_salesman()
+{
+    int size=pow(2,N);
+    unsigned int DP[N][size];
+    memset(DP,INT_MAX,sizeof(DP));
+    
+    for(int i=0;i<N;i++)
+        DP[i][0]=L[i][0];
+        
+    int arr[size];
+    
+    for(int i=0;i<pow(2,N);i++)
+    {
+        arr[i]=count_bits(i);
+    }
+
+    for(int len=1;len<N-1;len++)
+    {
+        for(int i=1;i<N;i++)
+        {
+            for(int k=0;k<pow(2,N);k++)
+            {
+                if(arr[k]==len && (k&(1))==0 && (k&(1<<i))==0 )
+                {
+                    int j=k;
+                    int ind=0;
+                    while(j)
+                    {
+                        bool flag=j%2;
+                        if(flag)
+                        {
+                            DP[i][k]=min(DP[i][k],L[i][ind]+DP[ind][k^(1<<ind)]);
+                        }
+                        j/=2;
+                        ind++;
+                    }
+                }
+                
+            }
+        
+        }
+    }
+    int val = pow(2,N)-2;
+    for(int k=1;k<N;k++)
+    {
+        DP[0][val]=min(DP[0][val],L[0][k]+DP[k][val^(1<<k)]);
+    }
+    cout<<DP[0][val]<<endl;
+}
+int main() {
+	// your code goes here
+    travelling_salesman();
+	return 0;
+}

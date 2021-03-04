@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int n=6;
+string s1="abbac";
+string s2="abcbc";
+int dp[7][7];
+
+int change(int i,int j)
+{
+    
+    if(~dp[i][j])
+        return dp[i][j];
+    
+    if(i==n)
+    {
+        dp[i][j]=(n-j);
+        return dp[i][j];
+    }
+    if(j==n)
+    {
+        dp[i][j]=(n-i);
+        return dp[i][j];
+    }
+    
+    int a2,a3,a4,a1=-1;
+    if(s1[i]==s2[j])
+    {
+        a1=change(i+1,j+1);
+    }
+    
+    a2=1+change(i+1,j);
+    a3=1+change(i+1,j+1);
+    a4=1+change(i,j+1);
+    
+    int mi;
+    if(~a1)
+        mi=min(a1,a2);
+    else
+        mi=a2;
+    mi=min(mi,a3);
+    mi=min(mi,a4);
+    dp[i][j]=mi;
+    return mi;
+    
+}
+int main() {
+	// your code goes here
+	memset(dp,-1,sizeof(dp));
+	cout<<change(0,0);
+	return 0;
+}

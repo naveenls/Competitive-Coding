@@ -1,0 +1,7 @@
+After removing 0
+Minimum element is arr[0]
+
+Lets say we have found arr[0] arr[1] ..... arr[i-1]
+
+for finding arr[i] we remove all the subset sum formed by arr[0] arr[1] ..... arr[i-1] in the given all subset sum 
+Now the minimum element of all subset sum in arr[i]

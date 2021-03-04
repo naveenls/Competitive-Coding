@@ -1,0 +1,23 @@
+import cv2
+import matplotlib.pyplot as plt
+
+img = cv2.imread(r'F:\CS Projects\Coding\Python\Input\sukoku.jpg',0)
+#img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+img = cv2.GaussianBlur(img, (5, 5), 0)
+sobelx = cv2.Sobel(img,cv2.CV_64F,1,0,3)
+sobely = cv2.Sobel(img,cv2.CV_64F,0,1,3)
+sobelxy = cv2.Sobel(img,cv2.CV_64F,1,1,3)
+Scharrx = cv2.Scharr(img,cv2.CV_64F,1,0)
+Scharry = cv2.Scharr(img,cv2.CV_64F,0,1)
+Scharrxy = cv2.Scharr(img,cv2.CV_64F,1,1)
+cv2.imwrite(r'C:\Users\HP\Downloads\sukoku2.jpg',sobelxy)
+cv2.imwrite(r'C:\Users\HP\Downloads\sukoku3.jpg',Scharrxy)
+plt.subplot(231),plt.imshow(sobelx,cmap='gray'),plt.axis('off'),plt.title('SobelX')
+plt.subplot(232),plt.imshow(sobely,cmap='gray'),plt.axis('off'),plt.title('SobelY')
+plt.subplot(233),plt.imshow(sobelxy,cmap='gray'),plt.axis('off'),plt.title('SobelXY')
+plt.subplot(234),plt.imshow(sobelx,cmap='gray'),plt.axis('off'),plt.title('ScharX')
+plt.subplot(235),plt.imshow(sobely,cmap='gray'),plt.axis('off'),plt.title('ScharY')
+plt.subplot(236),plt.imshow(sobelxy,cmap='gray'),plt.axis('off'),plt.title('ScharXY')
+plt.show()
+cv2.waitKey()
+cv2.destroyAllWindows()

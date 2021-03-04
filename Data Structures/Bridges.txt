@@ -1,0 +1,50 @@
+const int maxN=1e5+1;
+
+vector<int> adj[maxN];
+
+bool visited[maxN];
+int disc[maxN];
+int low[maxN]; 
+int parent[maxN];
+
+set<pair<int,int> > bridges;
+
+void bridgeUtil(int u) 
+{ 
+    static int TIME=0;
+    visited[u] = true; 
+  
+    disc[u] = low[u] = ++TIME; 
+  
+    for (auto i = adj[u].begin(); i != adj[u].end(); ++i) 
+    {
+        int v = *i;  
+  
+        if (!visited[v]) 
+        { 
+            parent[v] = u; 
+            bridgeUtil(v); 
+
+            low[u]  = min(low[u], low[v]); 
+
+            if (low[v] > disc[u]) 
+              cout<<u<<' '<<v<<endl;
+        } 
+  
+        else if (v != parent[u]) 
+            low[u]  = min(low[u], disc[v]); 
+    } 
+} 
+
+void bridge(int n) 
+{
+    for (int i=0;i<n;i++) 
+    { 
+        parent[i] = -1; 
+        visited[i] = false; 
+    }
+ 	
+    for (int i=0;i<n;i++) 
+        if (visited[i] == false)
+            bridgeUtil(i); 
+} 

@@ -1,0 +1,59 @@
+const int maxN=50;
+
+vector<int> adj[maxN];
+bool visited[maxN];
+int disc[maxN];
+int low[maxN];
+int parent[maxN];
+bool ap[maxN];
+
+void APUtil(int u) 
+{ 
+    static int time = 0; 
+  
+    int children = 0;   
+    visited[u] = true; 
+  
+    disc[u] = low[u] = ++time; 
+  
+    for (auto i = adj[u].begin(); i != adj[u].end(); ++i) 
+    { 
+        int v = *i;
+
+        if (!visited[v]) 
+        { 
+            children++; 
+            parent[v] = u; 
+            APUtil(v); 
+
+            low[u]  = min(low[u], low[v]); 
+
+            if (parent[u] == -1 && children > 1) 
+               ap[u] = true; 
+
+            if (parent[u] != -1 && low[v] >= disc[u]) 
+               ap[u] = true; 
+        } 
+  
+        else if (v != parent[u]) 
+            low[u]  = min(low[u], disc[v]); 
+    } 
+}
+  
+void AP() 
+{   
+    for (int i = 0; i < V; i++) 
+    { 
+        parent[i] = -1; 
+        visited[i] = false; 
+        ap[i] = false; 
+    } 
+
+    for (int i = 0; i < V; i++) 
+        if (visited[i] == false) 
+            APUtil(i); 
+  
+    for (int i = 0; i < V; i++) 
+        if (ap[i] == true) 
+            cout << i << " "; 
+} 

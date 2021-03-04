@@ -1,0 +1,11 @@
+const int maxN=1e5+1;
+long long mod=99053;
+
+long long iv[maxN];
+
+void find_inverse_array()
+{
+	iv[1]=1;
+	for(int i=2; i<maxN; ++i)
+		iv[i]=mod-mod/i*iv[mod%i]%mod;
+}
