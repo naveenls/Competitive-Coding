@@ -1,60 +1,50 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int N;
-
-int cnt(int arr[])
-{
-	int ans = 0;
-	
-	for(int i=0;i<N;i++)
-	{
-		for(int j=i;j<N;j++)
-		{
-			bool flag = 1;
-			
-			for(int k=i;k<=j;k++)
-			{
-				if(arr[k] != arr[j-k+i])
-					flag = 0;
-			}
-			
-			ans += flag;
-		}
-	}
-	
-	return ans;
-}
-
 int main()
 {
-	for(int nn=1;nn<=16;nn++)
+	int t;
+	cin>>t;
+		
+	while(t--)
 	{
-		N = nn;
+		int n,m;
+		cin>>n>>m;
 		
-		int arr[N];
-	
-	int min_ans = 100000;
-	int mask = (1<<N);
-	
-	for(int i=0;i<mask;i++)
-	{		
-		for(int j=0;j<N;j++)
-			arr[j] = (i & (1<<j))>0;
-				
-		min_ans = min(min_ans, cnt(arr));
+		int cnt[m] = {0};
+		int a;
 		
-		if(min_ans == 6)
+		for(int i=0;i<n;i++)
 		{
-			for(int j=0;j<N;j++)
-				cout<<arr[j]<<' ';
-			
-			cout<<endl;
+			cin>>a;
+			cnt[a%m]++;
 		}
+		
+		int ans = 0;
+		
+		for(int i=1;i<m;i++)
+		{
+			if(cnt[i]>cnt[m-i])
+			{
+				cnt[i] -= (cnt[m-i]+1);
+				ans += (1+cnt[i]);
+			}
+			else if(cnt[m-i]>cnt[i])
+			{
+				cnt[m-i] -= (cnt[i]+1);
+				ans += (1+cnt[m-i]);
+			}
+			else if(cnt[i]){
+				ans++;
+			}
+			cnt[i] = 0;
+			cnt[m-i] = 0;
+		}
+		
+		if(cnt[0])
+			ans++;
+		
+		cout<<ans<<endl;
 	}
-	cout<<min_ans<<endl;
-	}
-	
-	
 	return 0;
 }
